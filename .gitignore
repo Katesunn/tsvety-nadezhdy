@@ -1,0 +1,5 @@
+source-data/
+qa/
+node_modules/
+*contact-sheet.jpg
+*.log
