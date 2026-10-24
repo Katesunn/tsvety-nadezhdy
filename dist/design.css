@@ -35,8 +35,6 @@ dialog{position:fixed;border:1px solid var(--border);border-radius:22px;padding:
 /* Social marks share one color in every location, with a white variant in dark mode. */
 img[src$='/max-logo-green.svg'],img[src$='/odnoklassniki-green.svg']{filter:none!important}
 :root[data-theme=dark] img[src$='/max-logo-green.svg'],:root[data-theme=dark] img[src$='/odnoklassniki-green.svg']{filter:brightness(0) invert(1)!important}
-.social-buttons>.button.primary{background:var(--paper);color:var(--text);border-color:var(--border)}
-.social-buttons>.button.primary:hover{background:var(--surface)}
 .footer-contact.footer-socials{flex-direction:row;justify-content:flex-end;align-items:center;gap:10px}
 .footer-contact.footer-socials a{display:inline-flex;align-items:center;justify-content:center;padding:0;min-width:44px;min-height:44px}
 .footer-contact.footer-socials .max-logo{width:24px;height:24px}
@@ -63,14 +61,11 @@ img[src$='/max-logo-green.svg'],img[src$='/odnoklassniki-green.svg']{filter:none
 .button.secondary:is(:hover,:focus-visible)>.icon,.hero .button:is(:hover,:focus-visible)>.icon{filter:brightness(0) invert(1)}
 .hero .button:active>.icon{filter:none}
 .social-buttons>.button.primary,.social-buttons>.button.secondary{background:var(--contact-fill);color:var(--contact-text);border-color:var(--contact-fill)}
-.social-buttons>.button:is(:hover,:focus-visible){background:var(--control-hover);color:#fff;border-color:var(--control-hover)}
-.social-buttons>.button:active{background:var(--petal-pressed);color:#532139;border-color:var(--petal-pressed)}
+.social-buttons>.button:is(.primary,.secondary):is(:hover,:focus-visible,:active){background:var(--control-hover);color:#fff;border-color:var(--control-hover)}
 .social-buttons>.button>img{filter:none!important}
-.social-buttons>.button:is(:hover,:focus-visible)>img{filter:brightness(0) invert(1)!important}
-.social-buttons>.button:active>img{filter:none!important}
+.social-buttons>.button:is(:hover,:focus-visible,:active)>img{filter:brightness(0) invert(1)!important}
 :root[data-theme=dark] .social-buttons>.button>img{filter:none!important}
-:root[data-theme=dark] .social-buttons>.button:is(:hover,:focus-visible)>img{filter:brightness(0) invert(1)!important}
-:root[data-theme=dark] .social-buttons>.button:active>img{filter:none!important}
+:root[data-theme=dark] .social-buttons>.button:is(:hover,:focus-visible,:active)>img{filter:brightness(0) invert(1)!important}
 .icon-button:is(:hover,:focus-visible){background:var(--control-hover);color:#fff}
 .icon-button:active{background:var(--petal-pressed);color:#532139}
 .icon-button:is(:hover,:focus-visible)>img{filter:brightness(0) invert(1)!important}
