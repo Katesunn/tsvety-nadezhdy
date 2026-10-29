@@ -4,7 +4,33 @@
   const categories=window.FLOWER_CATEGORIES,products=window.FLOWER_PRODUCTS;
   const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const priceLabel=p=>p.price===null?'Цена по запросу':p.price.toLocaleString('ru-RU')+' ₽';
-  const stockNote='Наличие, размер растения и актуальную стоимость уточняйте при заказе.';
+  const stockNote='Наличие, размеры растения и актуальную стоимость уточняйте при заказе.';
+  const escapePattern=s=>String(s).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  function productDescription(p){
+    const compact=s=>String(s??'').replace(/\s+/g,' ').trim();
+    let text=compact(p.description);
+    if(p.sku)text=text.replace(new RegExp('^'+escapePattern(p.sku)+'(?![0-9/])\\s*','iu'),'');
+    const name=compact(p.name),plant=categories.find(c=>c.id===p.category)?.plant||'';
+    const names=[name,plant?name.replace(new RegExp('^(?:вегетативн[а-яё]+\\s+)?'+escapePattern(plant)+'\\s+','iu'),''):name];
+    for(const candidate of names){
+      if(!candidate)continue;
+      const prefix=new RegExp('^'+escapePattern(candidate)+'(?=$|[\\s.,;:()—–-])','iu');
+      if(prefix.test(text)){text=text.replace(prefix,'');break;}
+    }
+    text=text.replace(/\d+(?:[.,]\d+)?\s*(?:руб(?:лей|ля|ль)?\.?|р\.?|₽)(?=\s|[),.;]|$)/giu,'');
+    const trim=s=>s.replace(/^[\s,.;:—–-]+|[\s,;:—–-]+$/gu,'').trim();
+    text=trim(text);
+    if(text.startsWith('(')&&text.endsWith(')'))text=trim(text.slice(1,-1));
+    if(!text)text=compact(p.size);
+    text=text.replace(/укорененн/giu,m=>m[0]==='У'?'Укоренённ':'укоренённ')
+      .replace(/(\d+)\s*гр(?=\s|[.,;:]|$)/giu,'$1 г')
+      .replace(/\s+([,.;:!?])/g,'$1').replace(/([;:])(?=\S)/g,'$1 ').replace(/,(?=[^\s\d])/g,', ')
+      .replace(/([.!?)])(?=[А-Яа-яЁё])/gu,'$1 ').replace(/\(\s+/g,'(').replace(/\s+\)/g,')');
+    text=compact(text).replace(/(в\s+\d+\s*г\s+)стаканчики/giu,'$1стаканчике');
+    if(/^\d+\s*г\s+стаканч/iu.test(text))text='В '+text;
+    if(text)text=text[0].toLocaleUpperCase('ru-RU')+text.slice(1)+(/[.!?…]$/.test(text)?'':'.');
+    return text;
+  }
   const key='nadezhda-favorites-v1';
   let saved;
   try { const raw=JSON.parse(localStorage.getItem(key)||'[]'); saved=new Set(Array.isArray(raw)?raw.filter(id=>products.some(p=>p.id===id)):[]); } catch { saved=new Set(); }
@@ -40,7 +66,7 @@
   function updateCount(){$('.favorites-link>img').src=`./assets/ph-heart${saved.size?'-fill':''}.svg`;document.querySelectorAll('.favorite-count').forEach(el=>{el.textContent=saved.size;el.hidden=!saved.size;});$('.favorites-link').setAttribute('aria-label',`Избранное, ${saved.size} ${plural(saved.size)}`);}
   let toastTimer;function toast(text){const el=$('.toast');el.textContent=text;el.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('visible'),3000);}
   async function copy(text,success){try{await navigator.clipboard.writeText(text);toast(success);}catch{const dialog=document.createElement('dialog');dialog.className='copy-dialog';dialog.innerHTML=`<h2>Скопируйте текст</h2><textarea aria-label="Текст для копирования" readonly></textarea><button class="button primary">Готово</button>`;document.body.append(dialog);$('textarea',dialog).value=text;$('button',dialog).onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove());dialog.showModal();$('textarea',dialog).select();}}
-  function openProduct(id){const p=products.find(p=>p.id===id);if(!p)return;const dialog=document.createElement('dialog');dialog.className='product-dialog';dialog.setAttribute('aria-labelledby','product-title');dialog.innerHTML=`<button class="icon-button dialog-close" aria-label="Закрыть">${icon('ph-x')}</button><div class="detail-gallery"><img class="detail-photo" src="./assets/${p.image}.webp" alt="${safe(p.name)}" width="600" height="600">${p.images.length>1?`<div class="detail-thumbs">${p.images.map((image,i)=>`<button data-detail-image="${image}" aria-label="Фото ${i+1}" aria-pressed="${i===0}"><img src="./assets/${image}.webp" alt="Фото ${i+1}"></button>`).join('')}</div>`:''}</div><div class="detail-copy"><span class="sku">Артикул ${p.sku?safe(p.sku):'не указан'}</span><h2 id="product-title">${safe(p.name)}</h2><p>${safe(p.size)}</p><p class="original-description">${safe(p.description)}</p><strong class="price ${p.price===null?'price-on-request':''}">${priceLabel(p)}</strong><p class="sample-note">${stockNote}</p><button class="button secondary" data-favorite="${p.id}" aria-pressed="${saved.has(p.id)}">${icon(saved.has(p.id)?'ph-heart-fill':'ph-heart')}<span>${saved.has(p.id)?'В избранном':'В избранное'}</span></button><a class="button primary max-trigger" href="https://max.ru/u/f9LHodD0cOKaOMjvuTLBEVfH1lGb5cDNrkHvBByFGdCg5YCWQJgUBWmQQRM" target="_blank" rel="noopener noreferrer">Уточнить в MAX</a></div>`;document.body.append(dialog);$('.dialog-close',dialog).onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove());dialog.addEventListener('click',e=>{if(e.target===dialog&&outsideDialog(e,dialog))dialog.close();});dialog.showModal();}
+  function openProduct(id){const p=products.find(p=>p.id===id);if(!p)return;const description=productDescription(p);const dialog=document.createElement('dialog');dialog.className='product-dialog';dialog.setAttribute('aria-labelledby','product-title');dialog.innerHTML=`<button class="icon-button dialog-close" aria-label="Закрыть">${icon('ph-x')}</button><div class="detail-gallery"><img class="detail-photo" src="./assets/${p.image}.webp" alt="${safe(p.name)}" width="600" height="600">${p.images.length>1?`<div class="detail-thumbs">${p.images.map((image,i)=>`<button data-detail-image="${image}" aria-label="Фото ${i+1}" aria-pressed="${i===0}"><img src="./assets/${image}.webp" alt="Фото ${i+1}"></button>`).join('')}</div>`:''}</div><div class="detail-copy"><span class="sku">Артикул ${p.sku?safe(p.sku):'не указан'}</span><h2 id="product-title">${safe(p.name)}</h2>${description?`<p class="product-description">${safe(description)}</p>`:''}<strong class="price ${p.price===null?'price-on-request':''}">${priceLabel(p)}</strong><p class="sample-note">${stockNote}</p><button class="button secondary" data-favorite="${p.id}" aria-pressed="${saved.has(p.id)}">${icon(saved.has(p.id)?'ph-heart-fill':'ph-heart')}<span>${saved.has(p.id)?'В избранном':'В избранное'}</span></button><a class="button primary max-trigger" href="https://max.ru/u/f9LHodD0cOKaOMjvuTLBEVfH1lGb5cDNrkHvBByFGdCg5YCWQJgUBWmQQRM" target="_blank" rel="noopener noreferrer">Уточнить в MAX</a></div>`;document.body.append(dialog);$('.dialog-close',dialog).onclick=()=>dialog.close();dialog.addEventListener('close',()=>dialog.remove());dialog.addEventListener('click',e=>{if(e.target===dialog&&outsideDialog(e,dialog))dialog.close();});dialog.showModal();}
   function outsideDialog(e,d){const r=d.getBoundingClientRect();return e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom;}
   const page=location.pathname.split('/').pop();
   if(page==='catalog.html')catalog();else if(page==='favorites.html')favorites();else home();
