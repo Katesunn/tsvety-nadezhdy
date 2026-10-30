@@ -4,7 +4,7 @@
    Radius: controls 10px, photos/cards 20px, feature banners 28px.
    The about photograph uses the same rounded square as the product photos.
    Layers: header 10, toast 30; native dialogs occupy the top layer. */
-:root{--cream:#f4f8de;--pink:#e26a85;--action:#abb039;--action-hover:#576100;--ink:#303616;--banner-ink:#242b0d;--delivery-panel:#e8edc9;--delivery-border:#d1d9a8;--delivery-icon:#dbe3b0;--bg:var(--cream);--surface:#e8edc9;--paper:var(--cream);--hero:var(--pink);--text:var(--ink);--muted:#626b3c;--accent:var(--action-hover);--accent-hover:var(--action-hover);--border:#d1d9a8;--white:var(--cream);--image-bg:#e3e8c6;--invert:none;--button-fill:var(--action);--button-text:var(--ink);--button-hover-fill:var(--action-hover);--button-hover-text:var(--cream);color-scheme:light}
+:root{--cream:#f4f8de;--pink:#F8B7B3;--action:#abb039;--action-hover:#576100;--ink:#303616;--banner-ink:#A02230;--delivery-panel:#e8edc9;--delivery-border:#d1d9a8;--delivery-icon:#dbe3b0;--bg:var(--cream);--surface:#e8edc9;--paper:var(--cream);--hero:var(--pink);--text:var(--ink);--muted:#626b3c;--accent:var(--action-hover);--accent-hover:var(--action-hover);--border:#d1d9a8;--white:var(--cream);--image-bg:#e3e8c6;--invert:none;--button-fill:var(--action);--button-text:var(--ink);--button-hover-fill:var(--action-hover);--button-hover-text:var(--cream);color-scheme:light}
 :root[data-theme=dark]{--delivery-panel:#343b20;--delivery-border:#515c30;--delivery-icon:#465126;--bg:#252b18;--surface:#343b20;--paper:#2c331d;--text:var(--cream);--muted:#c5cda5;--accent:#d0d77a;--border:#515c30;--image-bg:#343b20;--invert:brightness(0) invert(1);color-scheme:dark}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:104px}body{margin:0;background:var(--bg);color:var(--text);font-family:"Golos Text",Arial,sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased}button,input,select,textarea{font:inherit}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button,a{touch-action:manipulation}button{border:0;background:none;color:inherit;cursor:pointer}a{color:inherit;text-decoration:none}img{display:block;max-width:100%}h1,h2,h3,p{margin:0}h1,h2,h3{font-weight:500;letter-spacing:-.035em;line-height:1.1}h1{font-size:clamp(36px,5vw,70px)}h2{font-size:clamp(32px,3.5vw,49px)}h3{font-size:24px;letter-spacing:-.035em;line-height:1.35}p{color:var(--muted)}strong{font-weight:650}[hidden]{display:none!important}.shell{width:min(1320px,calc(100% - 80px));margin-inline:auto}.section{padding-block:80px}.icon{width:22px;height:22px;flex-shrink:0;object-fit:contain;filter:var(--invert)}:focus-visible{outline:3px solid var(--accent);outline-offset:5px}.visually-hidden{position:absolute;width:1px;height:1px;margin:-1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap}.skip{position:fixed;top:-100px;left:18px;padding:12px;z-index:30;background:var(--accent);color:var(--white)}.skip:focus{top:10px}
 /* Navigation */
@@ -67,9 +67,13 @@ img[src*='/max-logo-green.svg'],img[src*='/odnoklassniki-green.svg']{filter:var(
 .product-name{border-radius:4px;transition:color .2s}
 .product-name:is(:hover,:focus-visible,:active){color:var(--accent);text-decoration:underline;text-underline-offset:4px}
 .detail-thumbs button:is(:hover,:focus-visible,:active){border-color:var(--action-hover);background:var(--action)}
-.catalog-order{background:var(--pink);color:var(--banner-ink);--button-fill:var(--cream);--button-text:var(--ink);--button-hover-fill:var(--action);--button-hover-text:var(--ink)}
+.catalog-order{background:var(--pink);color:var(--banner-ink);--button-fill:var(--banner-ink);--button-text:var(--pink);--button-hover-fill:var(--action);--button-hover-text:var(--action-hover)}
 .catalog-order p{color:var(--banner-ink)}
-.catalog-order .button:is(:hover,:focus-visible,:active)>img{filter:none!important}
+/* Social marks follow the button text exactly in every banner state. */
+.catalog-order .social-buttons>.button>img{display:none}
+.catalog-order .social-buttons>.button::before{content:'';display:block;flex-shrink:0;width:21px;height:21px;background:currentColor;-webkit-mask:var(--social-mark) center/contain no-repeat;mask:var(--social-mark) center/contain no-repeat}
+.catalog-order .max-trigger{--social-mark:url('./assets/max-logo-green.svg')}
+.catalog-order .social-buttons>.button.secondary{--social-mark:url('./assets/odnoklassniki-green.svg')}
 
 /* A city-level map replaces the contact list; no pickup address is marked. */
 .contact-map{margin:0;min-width:0;align-self:start}
