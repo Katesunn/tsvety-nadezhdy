@@ -67,7 +67,7 @@ img[src*='/max-logo-green.svg'],img[src*='/odnoklassniki-green.svg']{filter:var(
 .product-name{border-radius:4px;transition:color .2s}
 .product-name:is(:hover,:focus-visible,:active){color:var(--accent);text-decoration:underline;text-underline-offset:4px}
 .detail-thumbs button:is(:hover,:focus-visible,:active){border-color:var(--action-hover);background:var(--action)}
-.catalog-order{background:var(--pink);color:var(--banner-ink);--button-fill:var(--banner-ink);--button-text:var(--pink);--button-hover-fill:var(--action);--button-hover-text:var(--action-hover)}
+.catalog-order{background:var(--pink);color:var(--banner-ink);--button-fill:var(--banner-ink);--button-text:var(--pink);--button-hover-fill:var(--action-hover);--button-hover-text:var(--cream)}
 .catalog-order p{color:var(--banner-ink)}
 /* Inline copies of the provided SVG marks inherit each banner button's text color. */
 .banner-social-icon{display:block;flex-shrink:0;width:21px;height:21px;fill:currentColor;filter:none}
@@ -125,4 +125,34 @@ img[src*='/max-logo-green.svg'],img[src*='/odnoklassniki-green.svg']{filter:var(
  .order-step h3{grid-column:2;grid-row:1;font-size:18px;margin:0 0 8px}
  .order-step p{grid-column:2;grid-row:2}
  .order-step .button{grid-column:2;grid-row:3;justify-self:start;width:auto;margin-top:16px;min-height:44px}
+}
+
+/* Keep both message actions together and provide a copy action at the page title. */
+.catalog-order{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+.catalog-order>div:first-child{min-width:0;max-width:560px}
+.catalog-order p{max-width:48ch}
+.catalog-order .social-buttons{display:flex;flex-wrap:nowrap;width:auto;gap:12px}
+.catalog-order .social-buttons>.button{flex-shrink:0}
+.favorites-heading{align-items:flex-start}
+.favorites-heading>div{min-width:0}
+.favorites-heading>.copy-list{flex-shrink:0;margin-top:4px}
+.favorites-count{display:inline-block;margin-left:12px;color:var(--muted);font-size:12px;white-space:nowrap}
+@media(max-width:1000px){
+ .catalog-order{grid-template-columns:1fr;gap:24px}
+ .catalog-order .social-buttons{justify-self:start}
+}
+@media(max-width:700px){
+ .catalog-order .social-buttons{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;max-width:420px;gap:10px}
+ .catalog-order .social-buttons>.button{min-width:0;min-height:52px;padding:10px 6px;font-size:12px;gap:6px}
+ .catalog-order .banner-social-icon{width:18px;height:18px}
+ .catalog-order .banner-social-icon.ok-mark{width:12px;height:21px}
+ .favorites-heading{gap:12px}
+ .catalog-page>.favorites-heading h1{font-size:clamp(24px,6.5vw,30px);line-height:1.15;overflow-wrap:normal}
+ .favorites-heading>.copy-list{font-size:12px;min-height:44px;padding:10px 12px;margin-top:0}
+ .favorites-heading>.copy-list>.icon{display:none}
+ .favorites-heading p{font-size:12px;line-height:1.7}
+ .favorites-count{margin-left:0;display:block;margin-top:7px}
+}
+@media(max-width:380px){
+ .catalog-order .social-buttons>.button{flex-direction:column;font-size:11px;min-height:68px;padding:8px 4px;gap:5px}
 }
