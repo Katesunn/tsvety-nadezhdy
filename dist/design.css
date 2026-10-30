@@ -59,9 +59,9 @@ img[src*='/max-logo-green.svg'],img[src*='/odnoklassniki-green.svg']{filter:var(
 .favorite-count{display:grid;place-items:center;width:22px;min-width:22px;height:22px;padding:0;border-radius:50%;line-height:1;font-size:10px;font-variant-numeric:tabular-nums;letter-spacing:0;text-align:center;background:var(--action-hover);color:var(--cream)}
 .favorite-button,.favorite-button.is-saved{background:var(--cream)}
 .favorite-button>img,.favorite-button.is-saved>img{filter:none!important}
-.favorite-button:is(:hover,:focus-visible,:active){background:var(--pink)}
-.detail-copy .button[data-favorite]:is(:hover,:focus-visible,:active){background:var(--pink);border-color:var(--pink);color:var(--ink)}
-.detail-copy .button[data-favorite]:is(:hover,:focus-visible,:active)>img{filter:none!important}
+.favorite-button:is(:hover,:focus-visible,:active){background:#F8B7B3}
+.detail-copy .button[data-favorite]:is(:hover,:focus-visible,:active){background:#F8B7B3;border-color:#F8B7B3;color:#A02230}
+.favorite-button:is(:hover,:focus-visible,:active)>img,.detail-copy .button[data-favorite]:is(:hover,:focus-visible,:active)>img{content:url('./assets/ph-heart-fill-rose.svg');filter:none!important}
 .category-tabs a{background:var(--action);border-color:var(--action);color:var(--ink)}
 .category-tabs a[aria-current=page],.category-tabs a:is(:hover,:focus-visible,:active){background:var(--action-hover);border-color:var(--action-hover);color:var(--cream)}
 .product-name{border-radius:4px;transition:color .2s}
