@@ -1,5 +1,6 @@
 source-data/
 qa/
 node_modules/
+.vercel/
 *contact-sheet.jpg
 *.log

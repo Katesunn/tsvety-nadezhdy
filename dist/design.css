@@ -156,3 +156,9 @@ img[src*='/max-logo-green.svg'],img[src*='/odnoklassniki-green.svg']{filter:var(
 @media(max-width:380px){
  .catalog-order .social-buttons>.button{flex-direction:column;font-size:11px;min-height:68px;padding:8px 4px;gap:5px}
 }
+
+/* Source-album products use the same square photo frame as every other product.
+   `cover` fills that frame while keeping the original image proportions intact. */
+.source-photo-dialog .detail-photo{object-fit:cover}
+.source-photo-dialog .product-description{white-space:pre-line}
+
