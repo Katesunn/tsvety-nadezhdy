@@ -1,0 +1,9 @@
+{
+	admin off
+}
+
+http://:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+	file_server
+}
